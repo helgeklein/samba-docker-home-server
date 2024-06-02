@@ -1,0 +1,51 @@
+services:
+
+  samba:
+    container_name: samba
+    hostname: ${DC_NAME}
+    build: ./dockerfile
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config:/etc/samba/config
+      - ./data:/var/lib/samba
+      - ./shares:/shares
+    environment:
+      - DOMAIN_FQDN=${DOMAIN_FQDN}
+      - DOMAIN_DN=${DOMAIN_DN}
+      - DOMAIN_EMAIL=${DOMAIN_EMAIL}
+      - DOMAINPASS=initialAdminPass    # Change after domain setup
+      - DNSFORWARDER=${MAIN_IP}
+      - DC_IP=${DC_IP}
+    ports:
+      - ${DC_IP}:53:53
+      - ${DC_IP}:53:53/udp
+      - ${DC_IP}:88:88
+      - ${DC_IP}:88:88/udp
+      - ${DC_IP}:123:123
+      - ${DC_IP}:123:123/udp
+      - ${DC_IP}:135:135
+      - ${DC_IP}:137-138:137-138/udp
+      - ${DC_IP}:139:139
+      - ${DC_IP}:389:389
+      - ${DC_IP}:389:389/udp
+      - ${DC_IP}:445:445
+      - ${DC_IP}:464:464
+      - ${DC_IP}:464:464/udp
+      - ${DC_IP}:636:636
+      - ${DC_IP}:1024-1044:1024-1044
+      - ${DC_IP}:3268-3269:3268-3269
+    dns_search:
+      - ${DOMAIN_FQDN}
+    dns:
+      - ${DC_IP}
+      - ${MAIN_IP}
+    extra_hosts:
+      - ${DC_NAME}.${DOMAIN_FQDN}:${DC_IP}
+    cap_add:
+      - NET_ADMIN
+      - SYS_NICE
+      - SYS_TIME
+    devices:
+      - /dev/net/tun
+    privileged: true
