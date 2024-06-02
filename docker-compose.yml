@@ -14,7 +14,7 @@ services:
       - DOMAIN_FQDN=${DOMAIN_FQDN}
       - DOMAIN_DN=${DOMAIN_DN}
       - DOMAIN_EMAIL=${DOMAIN_EMAIL}
-      - DOMAINPASS=initialAdminPass    # Change after domain setup
+      - DOM_ADMIN_PW=initialAdminPass$123    # Change after domain setup
       - DNSFORWARDER=${MAIN_IP}
       - DC_IP=${DC_IP}
     ports:
@@ -40,8 +40,6 @@ services:
     dns:
       - ${DC_IP}
       - ${MAIN_IP}
-    extra_hosts:
-      - ${DC_NAME}.${DOMAIN_FQDN}:${DC_IP}
     cap_add:
       - NET_ADMIN
       - SYS_NICE

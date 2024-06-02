@@ -12,7 +12,9 @@ if [ -f "$CONFIG_FILE" ]; then
 else
 
    echo "No Samba config file found at: $CONFIG_FILE"
-   echo "Please exec into the container and provision Samba." 
+   echo "Please exec into the container and provision Samba by running the following commands:" 
+   echo "   docker exec -it samba bash"
+   echo "   $SCRIPT_PATH/$PROVISION_SCRIPT"
    sleep infinity
 
 fi

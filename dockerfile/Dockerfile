@@ -20,6 +20,7 @@ RUN rm /etc/samba/smb.conf
 RUN  mkdir -p /usr/helpers
 COPY --chmod=755 init.sh /usr/helpers/init.sh
 COPY --chmod=755 vars.sh /usr/helpers/vars.sh
+COPY --chmod=755 samba-provision.sh /usr/helpers/samba-provision.sh
 
 # Cleanup
 RUN apt-get purge --auto-remove -y && \
