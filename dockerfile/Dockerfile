@@ -9,8 +9,10 @@ RUN apt-get update; \
         samba \
         smbclient \
         krb5-user \
+        libpam-krb5 \
         winbind \
         tini \
+        dnsutils \
         nano;
 
 # Remove the default smb.conf

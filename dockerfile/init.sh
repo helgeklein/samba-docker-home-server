@@ -6,8 +6,16 @@ source "$SCRIPT_PATH"/vars.sh
 
 if [ -f "$CONFIG_FILE" ]; then
 
-   # We assume Samba is provisioned
-   exec smbd --configfile="$CONFIG_FILE" --foreground --debug-stdout --debuglevel=1 --no-process-group
+   # We assume Samba is provisioned.
+
+   # Use the Kerberos configuration the provisioning tool created for us
+   cp -f /var/lib/samba/private/krb5.conf /etc/krb5.conf
+   
+   # Create a link from the expected config file location to our custom location on the Docker host
+   ln -s "$CONFIG_FILE" "$DEFAULT_CONFIG_FILE"
+   
+   # Run Samba (blocking)
+   exec samba --interactive --no-process-group
 
 else
 
