@@ -12,6 +12,7 @@ if [ -f "$CONFIG_FILE" ]; then
    cp -f /var/lib/samba/private/krb5.conf /etc/krb5.conf
    
    # Create a link from the expected config file location to our custom location on the Docker host
+   rm -f "$DEFAULT_CONFIG_FILE"
    ln -s "$CONFIG_FILE" "$DEFAULT_CONFIG_FILE"
    
    # Run Samba (blocking)

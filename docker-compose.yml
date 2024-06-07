@@ -16,24 +16,22 @@ services:
       - DOMAIN_EMAIL=${DOMAIN_EMAIL}
       - DNSFORWARDER=${MAIN_IP}
       - DC_IP=${DC_IP}
+      - RPC_PORT_RANGE=${RPC_PORT_RANGE}
     ports:
-      - ${DC_IP}:53:53
-      - ${DC_IP}:53:53/udp
-      - ${DC_IP}:88:88
-      - ${DC_IP}:88:88/udp
-      - ${DC_IP}:123:123
-      - ${DC_IP}:123:123/udp
-      - ${DC_IP}:135:135
-      - ${DC_IP}:137-138:137-138/udp
-      - ${DC_IP}:139:139
-      - ${DC_IP}:389:389
-      - ${DC_IP}:389:389/udp
-      - ${DC_IP}:445:445
-      - ${DC_IP}:464:464
-      - ${DC_IP}:464:464/udp
-      - ${DC_IP}:636:636
-      - ${DC_IP}:1024-1044:1024-1044
-      - ${DC_IP}:3268-3269:3268-3269
+      - ${DC_IP}:53:53                                # DNS
+      - ${DC_IP}:53:53/udp                            # DNS
+      - ${DC_IP}:88:88                                # Kerberos
+      - ${DC_IP}:88:88/udp                            # Kerberos
+      - ${DC_IP}:123:123/udp                          # NTP
+      - ${DC_IP}:135:135                              # RPC endpoint mapper
+      - ${DC_IP}:389:389                              # LDAP
+      - ${DC_IP}:389:389/udp                          # LDAP
+      - ${DC_IP}:445:445                              # SMB
+      - ${DC_IP}:464:464                              # Kerberos password change
+      - ${DC_IP}:464:464/udp                          # Kerberos password change
+      - ${DC_IP}:636:636                              # LDAPS
+      - ${DC_IP}:3268-3269:3268-3269                  # Global catalog (SSL)
+      - ${DC_IP}:${RPC_PORT_RANGE}:${RPC_PORT_RANGE}  # RPC
     dns_search:
       - ${DOMAIN_FQDN}
     dns:
@@ -41,16 +39,10 @@ services:
       - ${MAIN_IP}
     extra_hosts:
       - ${DC_NAME}.${DOMAIN_FQDN}:${DC_IP}
-    cap_add:
-      - NET_ADMIN
-      - SYS_NICE
-      - SYS_TIME
+    privileged: true                                  # Run as true root. Required by Samba because it uses the security.* namespace (see https://www.samba.org/samba/docs/current/man-html/vfs_acl_xattr.8.html).
     networks:
       samba:
         ipv4_address: ${DC_IP}
-    devices:
-      - /dev/net/tun
-    privileged: true
 
 networks:
   samba:
