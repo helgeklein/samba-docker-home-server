@@ -12,7 +12,9 @@ RUN apt-get update; \
         libpam-krb5 \
         winbind \
         tini \
+        inetutils-ping \
         dnsutils \
+        iproute2 \
         nano;
 
 # Remove the default smb.conf
