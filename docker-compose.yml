@@ -9,7 +9,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./config:/etc/samba/config
       - ./data:/var/lib/samba
-      - ./shares:/shares
     environment:
       - DOMAIN_FQDN=${DOMAIN_FQDN}
       - DOMAIN_DN=${DOMAIN_DN}
