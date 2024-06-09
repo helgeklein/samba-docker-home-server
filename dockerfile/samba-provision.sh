@@ -29,8 +29,5 @@ sed -i "/dns forwarder/c\\\tdns forwarder = ${DNSFORWARDER}" "$DEFAULT_CONFIG_FI
 # smb.conf: disable NetBIOS
 sed -i "/\[global\]/a \\\tdisable netbios = yes" "$DEFAULT_CONFIG_FILE"
 
-# smb.conf: specify RPC ports
-sed -i "/\[global\]/a \\\trpc server dynamic port range = ${RPC_PORT_RANGE}" "$DEFAULT_CONFIG_FILE"
-
 # smb.conf: move the config created by the provisioning tool to our target directory
 mv "$DEFAULT_CONFIG_FILE" "$CONFIG_FILE"
