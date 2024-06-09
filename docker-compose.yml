@@ -17,21 +17,21 @@ services:
       - DNSFORWARDER=${MAIN_DNS_IP}
       - DC_IP=${DC_IP}
       - RPC_PORT_RANGE=${RPC_PORT_RANGE}
-    ports:
-      - ${DC_IP}:53:53                                # DNS
-      - ${DC_IP}:53:53/udp                            # DNS
-      - ${DC_IP}:88:88                                # Kerberos
-      - ${DC_IP}:88:88/udp                            # Kerberos
-      - ${DC_IP}:123:123/udp                          # NTP
-      - ${DC_IP}:135:135                              # RPC endpoint mapper
-      - ${DC_IP}:389:389                              # LDAP
-      - ${DC_IP}:389:389/udp                          # LDAP
-      - ${DC_IP}:445:445                              # SMB
-      - ${DC_IP}:464:464                              # Kerberos password change
-      - ${DC_IP}:464:464/udp                          # Kerberos password change
-      - ${DC_IP}:636:636                              # LDAPS
-      - ${DC_IP}:3268-3269:3268-3269                  # Global catalog (SSL)
-      - ${DC_IP}:${RPC_PORT_RANGE}:${RPC_PORT_RANGE}  # RPC
+#    ports:
+#      - ${DC_IP}:53:53                                # DNS
+#      - ${DC_IP}:53:53/udp                            # DNS
+#      - ${DC_IP}:88:88                                # Kerberos
+#      - ${DC_IP}:88:88/udp                            # Kerberos
+#      - ${DC_IP}:123:123/udp                          # NTP
+#      - ${DC_IP}:135:135                              # RPC endpoint mapper
+#      - ${DC_IP}:389:389                              # LDAP
+#      - ${DC_IP}:389:389/udp                          # LDAP
+#      - ${DC_IP}:445:445                              # SMB
+#      - ${DC_IP}:464:464                              # Kerberos password change
+#      - ${DC_IP}:464:464/udp                          # Kerberos password change
+#      - ${DC_IP}:636:636                              # LDAPS
+#      - ${DC_IP}:3268-3269:3268-3269                  # Global catalog (SSL)
+#      - ${DC_IP}:${RPC_PORT_RANGE}:${RPC_PORT_RANGE}  # RPC
     dns_search:
       - ${DOMAIN_FQDN}
     dns:
