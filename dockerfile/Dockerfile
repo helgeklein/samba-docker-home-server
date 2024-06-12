@@ -1,34 +1,44 @@
-FROM ubuntu:24.04
+FROM ubuntu:24.04 as base
 
 # Silent install
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Install packages
-RUN apt-get update; \
-    apt-get install -y \
+RUN apt-get update && apt-get install -y \
         samba \
         smbclient \
         krb5-user \
         libpam-krb5 \
         winbind \
+        libnss-winbind \
         tini \
         inetutils-ping \
         dnsutils \
         iproute2 \
-        nano;
+        nano \
+        && rm -rf /var/lib/apt/lists/*
 
 # Remove the default smb.conf
 RUN rm /etc/samba/smb.conf
 
 # Helper files
 RUN  mkdir -p /usr/helpers
-COPY --chmod=755 init.sh /usr/helpers/init.sh
 COPY --chmod=755 vars.sh /usr/helpers/vars.sh
+
+# Target stage for DCs
+FROM base as dc
+
+COPY --chmod=755 init-dc.sh /usr/helpers/init-dc.sh
 COPY --chmod=755 samba-provision.sh /usr/helpers/samba-provision.sh
 
-# Cleanup
-RUN apt-get purge --auto-remove -y && \
-    rm -rf /var/lib/apt/lists/*
+# Start Samba via Tini and our init script
+ENTRYPOINT ["/bin/tini", "--", "/usr/helpers/init-dc.sh"]
+
+# Target stage for FSs
+FROM base as fs
+
+COPY --chmod=755 init-fs.sh /usr/helpers/init-fs.sh
+COPY --chmod=755 samba-join.sh /usr/helpers/samba-join.sh
 
 # Start Samba via Tini and our init script
-ENTRYPOINT ["/bin/tini", "--", "/usr/helpers/init.sh"]
+ENTRYPOINT ["/bin/tini", "--", "/usr/helpers/init-fs.sh"]

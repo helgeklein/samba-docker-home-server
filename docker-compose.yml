@@ -3,7 +3,9 @@ services:
   samba-dc:
     container_name: ${DC_NAME}
     hostname: ${DC_NAME}
-    build: ./dockerfile
+    build:
+      context: ./dockerfile
+      target: dc
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -29,7 +31,9 @@ services:
   samba-fs:
     container_name: ${FS_NAME}
     hostname: ${FS_NAME}
-    build: ./dockerfile
+    build:
+      context: ./dockerfile
+      target: fs
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
