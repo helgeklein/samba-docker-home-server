@@ -1,6 +1,6 @@
 services:
 
-  samba-dc:
+  dc1:
     container_name: ${DC_NAME}
     hostname: ${DC_NAME}
     build:
@@ -28,7 +28,7 @@ services:
       sambanet:
         ipv4_address: ${DC_IP}
 
-  samba-fs:
+  fs1:
     container_name: ${FS_NAME}
     hostname: ${FS_NAME}
     build:
