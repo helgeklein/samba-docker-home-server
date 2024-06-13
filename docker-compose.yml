@@ -52,6 +52,8 @@ services:
     networks:
       sambanet:
         ipv4_address: ${FS_IP}
+    depends_on:
+      - dc1
 
 networks:
   sambanet:

@@ -16,7 +16,7 @@ if [ -f "$CONFIG_FILE" ]; then
    ln -s "$CONFIG_FILE" "$DEFAULT_CONFIG_FILE"
    
    # Run Samba (blocking)
-   exec samba --interactive --no-process-group
+   exec smbd --foreground --no-process-group --debug-stdout
 
 else
 
