@@ -15,13 +15,13 @@ if [ -f "$CONFIG_FILE" ]; then
 
 fi
 
-# Write the Kerberos configuration file
+# krb5.conf: write the Kerberos configuration file
 echo "[libdefaults]" > "$KERBEROS_CONFIG_FILE"
 echo "default_realm = $DOMAIN_FQDN_UCASE" >> "$KERBEROS_CONFIG_FILE"
 echo "dns_lookup_realm = false" >> "$KERBEROS_CONFIG_FILE"
 echo "dns_lookup_kdc = true" >> "$KERBEROS_CONFIG_FILE"
 
-# Write the Samba configuration file
+# smb.conf: write the Samba configuration file
 echo "[global]" > "$CONFIG_FILE"
 echo "  workgroup = ${DOMAIN_NETBIOS}" >> "$CONFIG_FILE"
 echo "  security = ADS" >> "$CONFIG_FILE"
@@ -36,6 +36,17 @@ echo "  winbind enum users = yes" >> "$CONFIG_FILE"
 echo "  winbind enum groups = yes" >> "$CONFIG_FILE"
 echo "  vfs objects = acl_xattr" >> "$CONFIG_FILE"
 echo "  map acl inherit = yes" >> "$CONFIG_FILE"
+
+# Create a link from the expected config file location to our custom location on the Docker host
+ln -s "$CONFIG_FILE" "$DEFAULT_CONFIG_FILE"
+
+# hosts: replace multiple entries with only one
+# Note:  the file is mounted by Docker, so we cannot change its inode. We can, however, change its contents.
+cp -f /etc/hosts /etc/hosts.new
+sed -i "/\\s\\+${FS_NAME}/d" /etc/hosts.new
+echo -e "${FS_IP}\\t${FS_NAME}.${DOMAIN_FQDN_LCASE}\\t${FS_NAME}" >> /etc/hosts.new
+cp -f /etc/hosts.new /etc/hosts
+rm -f /etc/hosts.new
 
 # Join the domain
 echo "Joining the domain ${DOMAIN_FQDN_LCASE}..."

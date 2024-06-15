@@ -15,8 +15,8 @@ if [ -f "$CONFIG_FILE" ]; then
    rm -f "$DEFAULT_CONFIG_FILE"
    ln -s "$CONFIG_FILE" "$DEFAULT_CONFIG_FILE"
    
-   # Run Samba (blocking)
-   exec smbd --foreground --no-process-group --debug-stdout
+   # Run supervisord (which in turn starts the Samba processes)
+   exec /usr/bin/supervisord --nodaemon --configuration=/etc/supervisor/config/supervisord.conf
 
 else
 

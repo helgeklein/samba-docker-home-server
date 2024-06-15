@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
         winbind \
         libnss-winbind \
         tini \
+        supervisor \
         inetutils-ping \
         dnsutils \
         iproute2 \
@@ -25,7 +26,9 @@ RUN rm /etc/samba/smb.conf
 RUN  mkdir -p /usr/helpers
 COPY --chmod=755 vars.sh /usr/helpers/vars.sh
 
+#
 # Target stage for DCs
+#
 FROM base as dc
 
 COPY --chmod=755 init-dc.sh /usr/helpers/init-dc.sh
@@ -34,7 +37,9 @@ COPY --chmod=755 samba-provision.sh /usr/helpers/samba-provision.sh
 # Start Samba via Tini and our init script
 ENTRYPOINT ["/bin/tini", "--", "/usr/helpers/init-dc.sh"]
 
+#
 # Target stage for FSs
+#
 FROM base as fs
 
 COPY --chmod=755 init-fs.sh /usr/helpers/init-fs.sh

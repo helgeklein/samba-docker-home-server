@@ -37,10 +37,13 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./config-fs1:/etc/samba/config
+      - ./config-fs1/samba:/etc/samba/config
+      - ./config-fs1/supervisor:/etc/supervisor/config
+      - ./data-fs1:/var/lib/samba
     environment:
       - DOMAIN_FQDN=${DOMAIN_FQDN}
       - DOMAIN_DN=${DOMAIN_DN}
+      - FS_NAME=${FS_NAME}
       - FS_IP=${FS_IP}
     dns_search:
       - ${DOMAIN_FQDN}
