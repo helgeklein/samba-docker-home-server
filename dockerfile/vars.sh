@@ -8,5 +8,6 @@ DOMAIN_NETBIOS=${DOMAIN_FQDN_UCASE%%.*}
 CONFIG_DIR=/etc/samba/config
 CONFIG_FILE=$CONFIG_DIR/smb.conf
 DEFAULT_CONFIG_FILE=/etc/samba/smb.conf
+USERMAP_FILE=$CONFIG_DIR/user.map
 
 KERBEROS_CONFIG_FILE=/etc/krb5.conf
