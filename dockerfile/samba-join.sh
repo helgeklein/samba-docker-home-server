@@ -49,6 +49,11 @@ echo -e "${FS_IP}\\t${FS_NAME}.${DOMAIN_FQDN_LCASE}\\t${FS_NAME}" >> /etc/hosts.
 cp -f /etc/hosts.new /etc/hosts
 rm -f /etc/hosts.new
 
+# If /var/lib/samba is a Docker bind mount the "private" directory needs to be created explicitly or the domain join fails
+if [ ! -d /var/lib/samba/private ]; then
+   mkdir /var/lib/samba/private
+fi
+
 # Join the domain
 echo "Joining the domain ${DOMAIN_FQDN_LCASE}..."
 samba-tool domain join ${DOMAIN_FQDN_LCASE} MEMBER -U Administrator
