@@ -7,6 +7,14 @@ source "$SCRIPT_PATH"/vars.sh
 # Set local variables
 JOIN_SCRIPT=samba-join.sh
 
+# hosts: replace multiple entries with only one
+# Note:  the file is mounted by Docker, so we cannot change its inode. We can, however, change its contents.
+cp -f /etc/hosts /etc/hosts.new
+sed -i "/\\s\\+${FS_NAME}/d" /etc/hosts.new
+echo -e "${FS_IP}\\t${FS_NAME}.${DOMAIN_FQDN_LCASE}\\t${FS_NAME}" >> /etc/hosts.new
+cp -f /etc/hosts.new /etc/hosts
+rm -f /etc/hosts.new
+
 if [ -f "$CONFIG_FILE" ]; then
 
    # We assume Samba is configured.

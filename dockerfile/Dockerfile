@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
         krb5-user \
         libpam-krb5 \
         winbind \
+        libpam-winbind \
         libnss-winbind \
         tini \
         supervisor \
@@ -17,6 +18,8 @@ RUN apt-get update && apt-get install -y \
         dnsutils \
         iproute2 \
         nano \
+	acl \
+	ldb-tools \
         && rm -rf /var/lib/apt/lists/*
 
 # Remove the default smb.conf

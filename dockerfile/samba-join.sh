@@ -37,17 +37,12 @@ echo "  winbind enum groups = yes" >> "$DEFAULT_CONFIG_FILE"
 echo "  vfs objects = acl_xattr" >> "$DEFAULT_CONFIG_FILE"
 echo "  map acl inherit = yes" >> "$DEFAULT_CONFIG_FILE"
 echo "  username map = ${USERMAP_FILE}" >> "$DEFAULT_CONFIG_FILE"
+echo "  dedicated keytab file = /etc/krb5.keytab" >> "$DEFAULT_CONFIG_FILE"
+echo "  kerberos method = secrets and keytab" >> "$DEFAULT_CONFIG_FILE"
+echo "  winbind refresh tickets = yes" >> "$DEFAULT_CONFIG_FILE"
 
 # user.map: map the domain's Administrator account to the local root user
 echo "!root = ${DOMAIN_NETBIOS}\Administrator" > "$USERMAP_FILE"
-
-# hosts: replace multiple entries with only one
-# Note:  the file is mounted by Docker, so we cannot change its inode. We can, however, change its contents.
-cp -f /etc/hosts /etc/hosts.new
-sed -i "/\\s\\+${FS_NAME}/d" /etc/hosts.new
-echo -e "${FS_IP}\\t${FS_NAME}.${DOMAIN_FQDN_LCASE}\\t${FS_NAME}" >> /etc/hosts.new
-cp -f /etc/hosts.new /etc/hosts
-rm -f /etc/hosts.new
 
 # If /var/lib/samba is a Docker bind mount the "private" directory needs to be created explicitly or the domain join fails
 if [ ! -d /var/lib/samba/private ]; then
