@@ -5,21 +5,24 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Install packages
 RUN apt-get update && apt-get install -y \
+        acl \
+        attr \
         samba \
         smbclient \
+        krb5-config \
         krb5-user \
         libpam-krb5 \
         winbind \
-        libpam-winbind \
         libnss-winbind \
+        libpam-winbind \
+        python3-setproctitle \
+        ldb-tools \
         tini \
         supervisor \
         inetutils-ping \
         dnsutils \
         iproute2 \
         nano \
-	acl \
-	ldb-tools \
         && rm -rf /var/lib/apt/lists/*
 
 # Remove the default smb.conf
