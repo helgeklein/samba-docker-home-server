@@ -41,6 +41,7 @@ services:
       - ./config-fs1/supervisor:/etc/supervisor/config:ro
       - ./data-fs1:/var/lib/samba
       - ./shares-fs1:/srv/samba
+      - /rpool/encrypted/.zfs/snapshot:/.zfs/snapshot:ro
     environment:
       - DOMAIN_FQDN=${DOMAIN_FQDN}
       - DOMAIN_DN=${DOMAIN_DN}
