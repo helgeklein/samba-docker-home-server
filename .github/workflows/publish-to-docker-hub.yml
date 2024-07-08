@@ -4,7 +4,7 @@ on:
   push:
     # Run the workflow only if a version tag is pushed
     tags:
-      - "v*.*.*"
+      - v*.*.*
 
 jobs:
   push_to_registry:
