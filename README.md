@@ -17,9 +17,9 @@ There aren't many configurations for running a Samba Active Directory domain con
 - AD domain **provisioning** and member **join scripts**.
 - All data is stored outside the containers in bind-mounted Docker volumes so that the containers can be re-built any time.
 - The file server container supports:
-  - ZFS **snapshots** that show up as **previous versions** on Windows clients.
-  - Samba recycle bin.
   - Windows permissions (ACLs).
+  - Access-based enumeration (ABE).
+  - Samba recycle bin.
 
 ## Documentation
 
