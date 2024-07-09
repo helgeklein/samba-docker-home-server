@@ -1,4 +1,4 @@
-# Modern Samba Docker Active Directory & File Server Container Environment for Home Servers and Small Businesses
+# Modern Samba Active Directory & File Server Docker Container Environment for Home Servers and Small Businesses
 
 There aren't many configurations for running a Samba Active Directory domain controller and a Samba file server in Docker containers. Those that I could find had so many issues that I decided to build my own configuration from scratch.
 
