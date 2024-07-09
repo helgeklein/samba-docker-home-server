@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 as base
+FROM ubuntu:24.04 AS base
 
 # Silent install
 ARG DEBIAN_FRONTEND=noninteractive
@@ -35,7 +35,7 @@ COPY --chmod=755 vars.sh /usr/helpers/vars.sh
 #
 # Target stage for DCs
 #
-FROM base as dc
+FROM base AS dc
 
 COPY --chmod=755 init-dc.sh /usr/helpers/init-dc.sh
 COPY --chmod=755 samba-provision.sh /usr/helpers/samba-provision.sh
@@ -46,7 +46,7 @@ ENTRYPOINT ["/bin/tini", "--", "/usr/helpers/init-dc.sh"]
 #
 # Target stage for FSs
 #
-FROM base as fs
+FROM base AS fs
 
 COPY --chmod=755 init-fs.sh /usr/helpers/init-fs.sh
 COPY --chmod=755 samba-join.sh /usr/helpers/samba-join.sh

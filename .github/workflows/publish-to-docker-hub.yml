@@ -14,7 +14,11 @@ jobs:
       contents: read
       attestations: write
       id-token: write
-      
+
+    strategy:
+      matrix:
+        target: [dc, fs]
+
     steps:
     
       - name: Check out the repo
@@ -24,7 +28,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ vars.DOCKERHUB_IMAGE }}
+          images: ${{ vars.DOCKERHUB_IMAGE }}.${{ matrix.target }}
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -49,14 +53,7 @@ jobs:
         with:
           context: dockerfile
           platforms: linux/amd64,linux/arm64
-          target: dc
+          target: ${{ matrix.target }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-name: ${{ vars.DOCKERHUB_IMAGE }}
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
