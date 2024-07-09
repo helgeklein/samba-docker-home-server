@@ -28,7 +28,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ vars.DOCKERHUB_IMAGE }}.${{ matrix.target }}
+          images: ${{ vars.DOCKERHUB_IMAGE_BASE }}.${{ matrix.target }}
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
