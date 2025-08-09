@@ -23,7 +23,7 @@ services:
       - ${MAIN_DNS_IP}
     extra_hosts:
       - ${DC_NAME}.${DOMAIN_FQDN}:${DC_IP}
-    privileged: true                                  # Run as true root. Required by Samba because it uses the security.* namespace (see https://www.samba.org/samba/docs/current/man-html/vfs_acl_xattr.8.html).
+    privileged: true                                  # Run as true root. Required on a DC because the vfs_acl_xattr module is enabled automatically, which uses the security.* namespace (see https://www.samba.org/samba/docs/current/man-html/vfs_acl_xattr.8.html).
     networks:
       sambanet:
         ipv4_address: ${DC_IP}
@@ -52,7 +52,7 @@ services:
       - ${MAIN_DNS_IP}
     extra_hosts:
       - ${FS_NAME}.${DOMAIN_FQDN}:${FS_IP}
-    privileged: true                                  # Run as true root. Required by Samba because it uses the security.* namespace (see https://www.samba.org/samba/docs/current/man-html/vfs_acl_xattr.8.html).
+    # privileged: true                                  # Run as true root. Required by Samba because it uses the security.* namespace (see https://www.samba.org/samba/docs/current/man-html/vfs_acl_xattr.8.html).
     networks:
       sambanet:
         ipv4_address: ${FS_IP}
@@ -69,5 +69,3 @@ networks:
         - subnet: "${SUBNET}"                         # Shared with the host
           gateway: "${GATEWAY}"                       # Same as on the host
           ip_range: "${CONTAINER_IP_RANGE}"           # Tell Docker which IP addresses are available for containers
-          aux_addresses:                              # Inform Docker about addresses already in use
-            host: ${MAIN_DNS_IP}
