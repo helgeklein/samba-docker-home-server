@@ -20,7 +20,7 @@ There aren't many configurations for running a Samba Active Directory domain con
   - POSIX ACLs.
   - Windows permissions/ACLs.
     - If used with an unprivileged Docker container, the option `acl_xattr:security_acl_name = user.NTACL` must be set on shares ([docs](https://www.samba.org/samba/docs/current/man-html/vfs_acl_xattr.8.html)).
-    - This requires the following settings in `smb.conf`:
+    - Windows ACLs require the following settings in `smb.conf`:
       - `vfs objects = acl_xattr`
       - `acl_xattr:ignore system acls = yes`
       - `map acl inherit = yes`
