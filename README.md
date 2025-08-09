@@ -17,7 +17,13 @@ There aren't many configurations for running a Samba Active Directory domain con
 - AD domain **provisioning** and member **join scripts**.
 - All data is stored outside the containers in bind-mounted Docker volumes so that the containers can be re-built at any time.
 - The file server container supports:
-  - Windows permissions (ACLs).
+  - POSIX ACLs.
+  - Windows permissions/ACLs.
+    - If used with an unprivileged Docker container, the option `acl_xattr:security_acl_name = user.NTACL` must be set on shares ([docs](https://www.samba.org/samba/docs/current/man-html/vfs_acl_xattr.8.html)).
+    - This requires the following settings in `smb.conf`:
+      - `vfs objects = acl_xattr`
+      - `acl_xattr:ignore system acls = yes`
+      - `map acl inherit = yes`
   - Access-based enumeration (ABE).
   - Samba recycle bin.
 
